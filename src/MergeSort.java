@@ -110,7 +110,7 @@ public class MergeSort extends Pane{
 		//set value for rectangles and text fields
 		for(int index=0;index < 10;index++) {
 			tFields.get(index).setText(Integer.toString(arr[index]));
-			rectangles.get(index).setHeight(arr[index]*14);
+			rectangles.get(index).setHeight(arr[index]*14*53/max(arr));
 		}
 		System.out.print("\n");
 		

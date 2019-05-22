@@ -29,7 +29,7 @@ public class BubbleSort extends Pane{
 		//set value for rectangles and text fields
 		for(int j=0;j<10;j++) {
 			tFields.get(j).setText(Integer.toString(arr[j]));
-			rectangles.get(j).setHeight(arr[j]*14);
+			rectangles.get(j).setHeight(arr[j]*53*14/max(arr));
 		}
 		i--;
 		if (i<k){

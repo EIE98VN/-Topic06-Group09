@@ -1,3 +1,5 @@
+import java.util.Random;
+
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,6 +16,7 @@ import javafx.stage.Stage;
 public class Controller extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		int[] arr = new int[10];
 		GridPane root = new GridPane();
 		root.setVgap(5);
 		// root.setGridLinesVisible(true);
@@ -28,7 +31,9 @@ public class Controller extends Application {
 
 		Button btn1 = new Button();
 		Button btn2 = new Button();
+
 		Button step = new Button("Step By Step");
+		Button gen = new Button("Generate randomly");
 
 		GridPane.setHalignment(startBtn, HPos.CENTER);
 		GridPane.setValignment(startBtn, VPos.BOTTOM);
@@ -36,10 +41,11 @@ public class Controller extends Application {
 		root.add(btn1, 1, 1);
 		root.add(startBtn, 1, 2);
 		root.add(btn2, 1, 3);
+		root.add(step, 1, 4);
+		root.add(gen, 1, 5);
 		GridPane.setHalignment(step, HPos.CENTER);
 		btn1.setVisible(false);
 		btn2.setVisible(false);
-		root.add(step, 1, 4);
 
 
 		root.widthProperty().addListener(new ChangeListener<Object>() {
@@ -82,6 +88,7 @@ public class Controller extends Application {
 					root.getChildren().remove(bucketSort.pane);
 					root.getChildren().remove(selectionSort.pane);
 					root.getChildren().remove(mergeSort.pane);
+					replaceArray(bubbleSort, random(arr));
 					bubbleSort.reset();
 					bubbleSort.initialize();
 					for(int i=0;i<10;i++) bubbleSort.rectangles.get(i).setWidth(index);
@@ -91,6 +98,7 @@ public class Controller extends Application {
 					root.getChildren().remove(bucketSort.pane);
 					root.getChildren().remove(selectionSort.pane);
 					root.getChildren().remove(mergeSort.pane);
+					replaceArray(selectionSort, random(arr));
 					selectionSort.reset();
 					selectionSort.initialize();
 					for(int i=0;i<10;i++) selectionSort.rectangles.get(i).setWidth(index);
@@ -100,6 +108,7 @@ public class Controller extends Application {
 					root.getChildren().remove(bucketSort.pane);
 					root.getChildren().remove(selectionSort.pane);
 					root.getChildren().remove(mergeSort.pane);
+					replaceArray(mergeSort, random(arr));
 					mergeSort.reset();
 					mergeSort.initialize();
 					for(int i=0;i<10;i++) mergeSort.rectangles.get(i).setWidth(index);
@@ -109,6 +118,8 @@ public class Controller extends Application {
 					root.getChildren().remove(bucketSort.pane);
 					root.getChildren().remove(selectionSort.pane);
 					root.getChildren().remove(mergeSort.pane);
+					for(int i=0;i<10;i++)
+						bucketSort.arr[i] = random(arr)[i];
 					bucketSort.reset();
 					bucketSort.initialize();
 					for(int i=0;i<10;i++) bucketSort.rects.get(i).setWidth(index);
@@ -157,6 +168,36 @@ public class Controller extends Application {
 				}
 			}
 		});
+		
+		gen.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if (sortAlgo.getValue() == "Bubble Sort") {
+					bubbleSort.timeline.stop();
+					replaceArray(bubbleSort, random(arr));
+					bubbleSort.reset();
+					bubbleSort.initialize();}
+				else if (sortAlgo.getValue() == "Selection Sort") {
+					selectionSort.timeline.stop();
+					replaceArray(selectionSort, random(arr));
+					selectionSort.reset();
+					selectionSort.initialize();
+				} else if (sortAlgo.getValue() == "Merge Sort") {
+					mergeSort.timeline.stop();
+					replaceArray(mergeSort, random(arr));
+					mergeSort.reset();
+					mergeSort.initialize();
+				} else {
+					bucketSort.timeline.stop();
+					for(int i=0;i<10;i++)
+						bucketSort.arr[i] = random(arr)[i];
+					bucketSort.reset();
+					bucketSort.initialize();
+				}
+			}
+		});
+		
+		
 		sortAlgo.getSelectionModel().select(0);
 		primaryStage.setTitle("Sort Visualization");
 		primaryStage.setScene(scene);
@@ -164,7 +205,19 @@ public class Controller extends Application {
 		primaryStage.setMinHeight(840);
 		primaryStage.show();
 	}
-
+	
+	public int[] random(int array[]) {
+		for(int i=0;i<10;i++) {
+			int a = new Random().nextInt(100);
+			array[i] = a;
+		}
+		return array;
+	}
+	
+	public void replaceArray(Pane pane, int[] arr) {
+		for(int i=0;i<10;i++)
+			pane.arr[i] = arr[i];
+	}
 	public static void main(String[] args) {
 		launch(args);
 	}

@@ -22,18 +22,26 @@ public class BucketSort{
 	ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
 	ArrayList<Button> buttons = new ArrayList<Button>();
 	Button[][] swaps = new Button[10][10];
-	int[] arr = {10,47,6,21,53,9,3,32,50,15};
-	int max = 53+1;
+	int[] arr = new int[10];
+
 	int i=0; //index of array to push to bucket
 	int j=0; //index of bucket
 	int k=0; //index of bucket to push back to array
 	int m=0; //index of elements in bucket
 	int n=0; //index of array pushed back from buckets
+	
+	public int max(int[] arr) {
+		int max=-1;
+		for(int i=0;i<arr.length;i++)
+			if(max<arr[i]) max=arr[i];
+		return max;
+	}
+	
 	public void sort() {
 		if(i<arr.length) {
 			String value = buttons.get(i).getText();
 			buttons.get(i).setVisible(false);
-			int index = arr[i]*10/max;
+			int index = arr[i]*10/(max(arr)+1);
 			Button btn = swaps[9-buckets.get(index).size()][index];
 			rects.get(index).setFill(Color.YELLOW);
 			btn.setText(value);

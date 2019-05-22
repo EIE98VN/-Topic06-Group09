@@ -15,6 +15,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import java.util.Random;
+
 
 public class Pane{
 	int StepByStep = 0;
@@ -22,8 +24,15 @@ public class Pane{
 	ArrayList<Rectangle> rectangles = new ArrayList<Rectangle>();
 	Timeline timeline = new Timeline();
 	GridPane pane  = new GridPane();
-	int[] arr = {10,47,6,21,53,9,3,32,50,15};
-	int[] arr1 = {10,47,6,21,53,9,3,32,50,15};
+	//int[] arr = {10,47,6,21,53,9,3,32,50,15};
+	//int[] arr1 = {10,47,6,21,53,9,3,32,50,15};
+	int[] arr = new int[10];
+	public int max(int[] arr) {
+		int max= 1;
+		for(int i=0;i<arr.length;i++)
+			if(max<arr[i]) max=arr[i];
+		return max;
+	}
 	public void initialize() {
 		pane.setPadding(new Insets(20));
 		pane.setHgap(5);
@@ -35,7 +44,7 @@ public class Pane{
 			tf.setEditable(false);
 			tf.setAlignment(Pos.CENTER);
 			tFields.add(tf);
-			Rectangle rect = new Rectangle(100,arr[i]*14);
+			Rectangle rect = new Rectangle(100,arr[i]*14*53/max(arr));
 			rect.setFill(Color.BROWN);
 			rectangles.add(rect);
 			pane.add(rect, i+1, 0);
@@ -45,10 +54,15 @@ public class Pane{
 			pane.add(tf,i+1,1);
 		}
 	}
-	public void reset() {
+	public int[] random(int array[]) {
+		//int arr[] = new int[10];
 		for(int i=0;i<10;i++) {
-			arr[i]=arr1[i];
+			int a = new Random().nextInt(100);
+			array[i] = a;
 		}
+		return array;
+	}
+	public void reset() {
 		this.pane.getChildren().clear();
 		tFields.clear();
 		rectangles.clear();
@@ -58,7 +72,7 @@ public class Pane{
 	}
 	public Pane(){
 		initialize();
-		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(800), new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
